@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Colors */
+  --color-bg-primary: #1a202c;
+  --color-bg-secondary: #2d3748;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e2e8f0;
+  --color-border: #4a5568;
+  --color-hover: #4a5568;
+
+  /* Spacing */
+  --spacing-default: 1rem;
+  --spacing-small: 0.5rem;
+
+  /* Sizes */
+  --font-size-default: 0.875rem;
+  --icon-size: 1.25rem;
+
+  /* Borders */
+  --border-radius: 0.375rem;
+
+  /* Transitions */
+  --transition-default: 300ms ease-in-out;
+}
+
+/* Additional global styles can be added here */

@@ -21,10 +21,36 @@ const MessageActions: React.FC<MessageActionsProps> = ({ actions }) => {
 						<button
 							key={index}
 							onClick={action.onClick}
-							className="p-1 text-gray-400 hover:text-gray-200 transition-colors"
+							className="flex items-center justify-center transition-colors focus:outline-none border-none"
 							aria-label={action.label}
+							style={{
+								color: "var(--color-text-secondary)",
+								backgroundColor: "var(--color-bg-secondary)",
+								padding: "var(--spacing-small)",
+								borderRadius: "50%",
+								width: "calc(var(--icon-size) * 2)",
+								height: "calc(var(--icon-size) * 2)",
+								transition: "var(--transition-default)",
+							}}
+							onMouseEnter={(e) => {
+								e.currentTarget.style.backgroundColor =
+									"var(--color-hover)";
+								e.currentTarget.style.color =
+									"var(--color-text-primary)";
+							}}
+							onMouseLeave={(e) => {
+								e.currentTarget.style.backgroundColor =
+									"var(--color-bg-secondary)";
+								e.currentTarget.style.color =
+									"var(--color-text-secondary)";
+							}}
 						>
-							<action.icon className="h-5 w-5" />
+							<action.icon
+								style={{
+									height: "var(--icon-size)",
+									width: "var(--icon-size)",
+								}}
+							/>
 						</button>
 					)
 			)}

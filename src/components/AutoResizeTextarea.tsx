@@ -5,6 +5,7 @@ interface AutoResizeTextareaProps {
 	onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 	placeholder?: string;
 	className?: string;
+	style?: React.CSSProperties;
 }
 
 const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
@@ -12,6 +13,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 	onChange,
 	placeholder,
 	className,
+	style,
 }) => {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -36,6 +38,10 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 		<textarea
 			ref={textareaRef}
 			className={className}
+			style={{
+				...style,
+				transition: "var(--transition-default)",
+			}}
 			value={value}
 			onChange={handleChange}
 			rows={1}

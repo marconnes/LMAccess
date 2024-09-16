@@ -28,10 +28,24 @@ const Message: React.FC<MessageProps> = ({
 }) => {
 	return (
 		<div
-			className={`w-full p-2 rounded-md bg-gray-900 text-white ${className}`}
+			className={`w-full ${className}`}
+			style={{
+				backgroundColor: "var(--color-bg-primary)",
+				color: "var(--color-text-primary)",
+				padding: "var(--spacing-small)",
+				borderRadius: "var(--border-radius)",
+			}}
 		>
 			{isReadOnly ? (
-				<div className="w-full bg-gray-900 text-gray-200 text-sm rounded-md p-1">
+				<div
+					style={{
+						backgroundColor: "var(--color-bg-primary)",
+						color: "var(--color-text-secondary)",
+						fontSize: "var(--font-size-default)",
+						padding: "var(--spacing-small)",
+						borderRadius: "var(--border-radius)",
+					}}
+				>
 					{text}
 				</div>
 			) : (
@@ -39,11 +53,22 @@ const Message: React.FC<MessageProps> = ({
 					value={text}
 					onChange={(e) => onTextChange?.(e.target.value)}
 					placeholder={placeholder}
-					className="w-full bg-gray-900 text-gray-200 text-sm rounded-md p-1 cursor-text resize-none overflow-hidden focus:outline-none focus:ring-0 border-none"
+					className="w-full cursor-text resize-none overflow-hidden focus:outline-none focus:ring-0 border-none"
+					style={{
+						backgroundColor: "var(--color-bg-primary)",
+						color: "var(--color-text-secondary)",
+						fontSize: "var(--font-size-default)",
+						padding: "var(--spacing-small)",
+						borderRadius: "var(--border-radius)",
+						transition: "var(--transition-default)",
+					}}
 				/>
 			)}
 			{(options.length > 0 || actions.length > 0) && (
-				<div className="flex items-center justify-between mt-1">
+				<div
+					className="flex items-center justify-between mt-1"
+					style={{ marginTop: "var(--spacing-small)" }}
+				>
 					{options.length > 0 && (
 						<Dropdown
 							options={options}

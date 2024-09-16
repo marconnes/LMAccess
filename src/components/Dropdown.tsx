@@ -46,16 +46,34 @@ const Dropdown: React.FC<DropdownProps> = ({
 		<div className="custom-select relative" ref={dropdownRef}>
 			<button
 				onClick={toggleDropdown}
-				className="flex items-center justify-between min-w-24 text-sm text-gray-200 bg-gray-900 p-1 border border-gray-700 rounded focus:outline-none focus:ring-0 hover:text-gray-400"
+				className="flex items-center justify-between min-w-24 focus:outline-none focus:ring-0"
+				style={{
+					backgroundColor: "var(--color-bg-primary)",
+					color: "var(--color-text-secondary)",
+					borderColor: "var(--color-border)",
+					fontSize: "var(--font-size-default)",
+					padding: "var(--spacing-small)",
+					borderRadius: "var(--border-radius)",
+					transition: "var(--transition-default)",
+					minWidth: "calc(var(--icon-size) * 6)",
+				}}
 			>
 				{selectedOption || "Select an option"}
-				<span className="ml-2 text-xs text-gray-200">▼</span>
+				<span className="ml-2 text-xs">▼</span>
 			</button>
 			{isOpen && (
 				<ul
-					className={`absolute z-10 min-w-24 text-sm text-gray-200 bg-gray-900 border border-gray-700 max-h-52 overflow-y-auto shadow-lg rounded ${
+					className={`absolute z-10 max-h-52 overflow-y-auto shadow-lg ${
 						showAbove ? "bottom-full mb-1" : "top-full mt-1"
 					} shadow-xl`}
+					style={{
+						backgroundColor: "var(--color-bg-primary)",
+						color: "var(--color-text-secondary)",
+						borderColor: "var(--color-border)",
+						fontSize: "var(--font-size-default)",
+						borderRadius: "var(--border-radius)",
+						minWidth: "calc(var(--icon-size) * 6)",
+					}}
 				>
 					{options.map((option, index) => (
 						<li
@@ -64,7 +82,19 @@ const Dropdown: React.FC<DropdownProps> = ({
 								onOptionChange?.(option);
 								setIsOpen(false);
 							}}
-							className="p-1 transition-colors duration-200 ease-in-out cursor-pointer hover:bg-gray-700"
+							className="cursor-pointer"
+							style={{
+								padding: "var(--spacing-small)",
+								transition: "var(--transition-default)",
+							}}
+							onMouseEnter={(e) => {
+								e.currentTarget.style.backgroundColor =
+									"var(--color-hover)";
+							}}
+							onMouseLeave={(e) => {
+								e.currentTarget.style.backgroundColor =
+									"var(--color-bg-primary)";
+							}}
 						>
 							{option}
 						</li>

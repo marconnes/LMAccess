@@ -29,6 +29,7 @@ export const useChat = () => {
 
 	const handleResend = (id: string) => {
 		// TODO: implementar lógica de reenvio
+        id = id;
 	};
 
 	const handleTextChange = (id: string, newText: string) => {
