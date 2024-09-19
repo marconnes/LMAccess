@@ -21,7 +21,7 @@ const MessageActions: React.FC<MessageActionsProps> = ({ actions }) => {
 						<button
 							key={index}
 							onClick={action.onClick}
-							className="flex items-center justify-center transition-colors focus:outline-none border-none"
+							className="flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
 							aria-label={action.label}
 							style={{
 								color: "var(--color-text-secondary)",

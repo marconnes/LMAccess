@@ -54,7 +54,7 @@ const Chat = () => {
 					/>
 				))}
 			</div>
-			<div className="p-4 bg-gray-800">
+			<div className="p-4" style={{ backgroundColor: "var(--color-bg-primary)" }}>
 				<Message
 					text={chatState.currentInput}
 					options={modelOptions}

@@ -53,7 +53,6 @@ const Message: React.FC<MessageProps> = ({
 					value={text}
 					onChange={(e) => onTextChange?.(e.target.value)}
 					placeholder={placeholder}
-					className="w-full cursor-text resize-none overflow-hidden focus:outline-none focus:ring-0 border-none"
 					style={{
 						backgroundColor: "var(--color-bg-primary)",
 						color: "var(--color-text-secondary)",

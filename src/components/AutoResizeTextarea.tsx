@@ -12,7 +12,6 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 	value,
 	onChange,
 	placeholder,
-	className,
 	style,
 }) => {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -37,7 +36,7 @@ const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = ({
 	return (
 		<textarea
 			ref={textareaRef}
-			className={className}
+			className={'w-full cursor-text resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500'}
 			style={{
 				...style,
 				transition: "var(--transition-default)",

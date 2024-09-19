@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 interface DropdownProps {
 	options: string[];
@@ -26,27 +26,17 @@ const Dropdown: React.FC<DropdownProps> = ({
 		setIsOpen(!isOpen);
 	};
 
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				dropdownRef.current &&
-				!dropdownRef.current.contains(event.target as Node)
-			) {
-				setIsOpen(false);
-			}
-		};
-
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const handleBlur = (event: React.FocusEvent) => {
+		if (!dropdownRef.current?.contains(event.relatedTarget as Node)) {
+			setIsOpen(false);
+		}
+	};
 
 	return (
-		<div className="custom-select relative" ref={dropdownRef}>
+		<div className="custom-select relative" ref={dropdownRef} onBlur={handleBlur}>
 			<button
 				onClick={toggleDropdown}
-				className="flex items-center justify-between min-w-24 focus:outline-none focus:ring-0"
+				className="flex items-center justify-between min-w-24 focus:outline-none focus:ring-2 focus:ring-indigo-500"
 				style={{
 					backgroundColor: "var(--color-bg-primary)",
 					color: "var(--color-text-secondary)",
