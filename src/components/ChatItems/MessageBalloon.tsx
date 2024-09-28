@@ -14,7 +14,7 @@ const MessageBalloon: React.FC<MessageBalloonProps> = ({
 		<div
 			className={`
             p-sm
-            rounded-lg
+            rounded
             bg-primary
             text-textPrimary
             ${className}

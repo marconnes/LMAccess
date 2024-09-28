@@ -20,7 +20,7 @@ export function useChat() {
 	const [state, setState] = useState<ChatState>({
 		messages: {},
 		currentInput: "",
-		currentModel: "gpt-4",
+		currentModel: "GPT-4o",
 	});
 
 	const processMessage = (message: string): string => {

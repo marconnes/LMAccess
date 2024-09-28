@@ -6,6 +6,7 @@
 	/* Colors */
 	--color-bg-primary: #1a202c;
 	--color-bg-secondary: #363e4b;
+	--color-bg-tertiary: #2d3748;
 	--color-text-primary: #ffffff;
 	--color-text-secondary: #e2e8f0;
 	--color-border: #4a5568;
@@ -26,8 +27,18 @@
 	--font-size-xl: 1.25rem;
 
 	/* Borders */
-	--border-radius: 0.375rem;
+	--border-radius: 0.2rem;
 
 	/* Transitions */
 	--transition-duration-default: 300ms;
+}
+
+@layer components {
+	.message-actions {
+		@apply transition-all duration-[var(--transition-duration-default)] ease-in-out max-h-0 opacity-0 m-0 p-0 overflow-hidden;
+	}
+
+	.message-actions-visible {
+		@apply max-h-20 opacity-100 p-1 mt-[var(--spacing-xs)];
+	}
 }

@@ -3,7 +3,9 @@ import MessageBalloon from "./MessageBalloon";
 import TextArea from "../MenuItems/TextArea";
 import DropdownBox from "../MenuItems/DropdownBox";
 import ButtonActions from "../MenuItems/ButtonActions";
-import { IoRefresh, IoTrash, IoSend } from "react-icons/io5";
+import { IoSend } from "react-icons/io5";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { TfiReload } from "react-icons/tfi";
 
 interface ChatMessageProps {
 	id: string;
@@ -83,9 +85,15 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 			? [
 					{
 						onClick: handleResend,
-						label: "Reenviar",
-						icon: <IoRefresh className="" />,
 						className: "bg-secondary hover:bg-blue-600 p-sm",
+						children: (
+							<>
+								<span className="mr-sm">
+									Reenviar
+								</span>
+								<span className="text-base">{<TfiReload />}</span>
+							</>
+						),
 					},
 			  ]
 			: []),
@@ -94,12 +102,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 					{
 						onClick: handleDelete,
 						label: "Deletar",
-						icon: <IoTrash className="" />,
+						icon: <FaRegTrashAlt className="" />,
 						className: "bg-secondary hover:bg-red-600 p-sm",
 					},
 			  ]
 			: []),
 	];
+
+	const messageActionsClass = `message-actions ${
+		message.sender === "user" && isFocused ? "message-actions-visible" : ""
+	}`;
 
 	return (
 		<MessageBalloon className="border border-border" onFocus={handleFocus}>
@@ -112,16 +124,20 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 					maxRows={20}
 				/>
 			</div>
-			{message.sender === "user" && isFocused && (
-				<div className="flex justify-between items-center mt-sm">
+			<div className={messageActionsClass}>
+				<div className="flex justify-between items-center">
 					<DropdownBox
-						options={["gpt-4", "gpt-3.5", "gpt-4o", "gpt-4-turbo"]}
+						options={["GPT-4o", "Claude-3.5-Sonnet", "o1-mini"]}
 						selectedOption={message.model}
 						onSelect={handleModelChange}
 					/>
-					<ButtonActions buttons={buttons} className="rounded" />
+					<ButtonActions
+						buttons={buttons}
+						className="rounded"
+						containerClassName="space-x-sm"
+					/>
 				</div>
-			)}
+			</div>
 		</MessageBalloon>
 	);
 };

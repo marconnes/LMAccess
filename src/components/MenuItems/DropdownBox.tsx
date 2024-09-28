@@ -23,7 +23,7 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
 					className={`
 						flex items-center justify-between
 						min-w-36 p-sm rounded
-						bg-primary border border-border
+						bg-primary
 						focus:outline-none focus:ring-2 focus:ring-indigo-500
 						transition duration-default ease-in-out
 						text-sm
@@ -39,6 +39,7 @@ const DropdownBox: React.FC<DropdownBoxProps> = ({
 				align="start"
 				sideOffset={5}
 				className={`
+					dropdown-content
 					bg-primary border border-border rounded
 					shadow-lg overflow-auto z-10 text-sm min-w-36
 					${menuClassName}
