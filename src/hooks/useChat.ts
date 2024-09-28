@@ -1,108 +1,128 @@
-import { useReducer } from "react";
+import { useState } from "react";
 
 interface Message {
-	id: string;
 	text: string;
-	sender: "user" | "bot";
+	sender: string;
 	model: string;
 }
 
+interface MessagesMap {
+	[id: string]: Message;
+}
+
 interface ChatState {
+	messages: MessagesMap;
 	currentInput: string;
-	messages: Message[];
 	currentModel: string;
 }
 
-type ChatAction =
-	| { type: "DELETE_MESSAGE"; payload: string }
-	| { type: "RESEND_MESSAGE"; payload: string }
-	| { type: "CHANGE_TEXT"; payload: { id: string; text: string } }
-	| { type: "SEND_MESSAGE" }
-	| { type: "CHANGE_MODEL"; payload: { id: string; model: string } };
+export function useChat() {
+	const [state, setState] = useState<ChatState>({
+		messages: {},
+		currentInput: "",
+		currentModel: "gpt-4",
+	});
 
-const chatReducer = (state: ChatState, action: ChatAction): ChatState => {
-	switch (action.type) {
-		case "DELETE_MESSAGE":
-			return {
-				...state,
-				messages: state.messages.filter((message) => message.id !== action.payload),
-			};
-		case "RESEND_MESSAGE":
-			return {
-				...state,
-				messages: state.messages.map((message) =>
-					message.id === action.payload ? { ...message, sender: "user" } : message
-				),
-			};
-		case "CHANGE_TEXT":
-			if (action.payload.id === "current") {
-				return { ...state, currentInput: action.payload.text };
-			}
-			return {
-				...state,
-				messages: state.messages.map((message) =>
-					message.id === action.payload.id ? { ...message, text: action.payload.text } : message
-				),
-			};
-		case "SEND_MESSAGE":
-			if (state.currentInput.trim()) {
-				return {
-					...state,
-					messages: [
-						...state.messages,
-						{
-							id: crypto.randomUUID(),
-							text: state.currentInput,
-							sender: "user",
-							model: state.currentModel,
+	const processMessage = (message: string): string => {
+		let processedMessage = message.trim(); // Remove leading and trailing whitespace
+		return processedMessage;
+	};
+
+	const handleSendMessage = (message: string, model: string) => {
+		const processedMessage = processMessage(message);
+		const newMessage: Message = {
+			text: processedMessage,
+			sender: "user",
+			model: model,
+		};
+		setState((prevState) => ({
+			...prevState,
+			messages: {
+				...prevState.messages,
+				[crypto.randomUUID()]: newMessage,
+			},
+			currentInput: "",
+		}));
+	};
+
+	const updateMessagesUpToIndex = (
+		prevState: ChatState,
+		targetIndex: number,
+		inclusive: boolean = true
+	) => {
+		const messageIds = Object.keys(prevState.messages);
+		const updatedMessages: MessagesMap = {};
+		const limit = inclusive ? targetIndex + 1 : targetIndex;
+
+		for (let i = 0; i < limit; i++) {
+			const key = messageIds[i];
+			updatedMessages[key] = prevState.messages[key];
+		}
+
+		return {
+			...prevState,
+			messages: updatedMessages,
+		};
+	};
+
+	const handleResendMessage = (id: string) => {
+		setState((prevState) => {
+			const targetIndex = Object.keys(prevState.messages).indexOf(id);
+			return targetIndex === -1
+				? prevState
+				: updateMessagesUpToIndex(prevState, targetIndex);
+		});
+	};
+
+	const handleDeleteMessage = (id: string) => {
+		setState((prevState) => {
+			const targetIndex = Object.keys(prevState.messages).indexOf(id);
+			return targetIndex === -1
+				? prevState
+				: updateMessagesUpToIndex(prevState, targetIndex, false);
+		});
+	};
+
+	const handleTextChange = (id: string, text: string) => {
+		setState((prevState) => ({
+			...prevState,
+			...(id === "-1"
+				? { currentInput: text }
+				: {
+						messages: {
+							...prevState.messages,
+							[id]: {
+								...prevState.messages[id],
+								text: text,
+							},
 						},
-					],
-					currentInput: "",
-				};
-			}
-			return state;
-		case "CHANGE_MODEL":
-			if (action.payload.id === "current") {
-				return { ...state, currentModel: action.payload.model };
-			}
-			return {
-				...state,
-				messages: state.messages.map((message) =>
-					message.id === action.payload.id ? { ...message, model: action.payload.model } : message
-				),
-			};
-		default:
-			return state;
-	}
-};
+				  }),
+		}));
+	};
 
-const initialState: ChatState = {
-	currentInput: "",
-	messages: [],
-	currentModel: "Select an option",
-};
-
-export const useChat = () => {
-	const [chatState, dispatch] = useReducer(chatReducer, initialState);
-
-	const handleDelete = (id: string) => dispatch({ type: "DELETE_MESSAGE", payload: id });
-
-	const handleResend = (id: string) => dispatch({ type: "RESEND_MESSAGE", payload: id });
-
-	const handleTextChange = (id: string, newText: string) =>
-		dispatch({ type: "CHANGE_TEXT", payload: { id, text: newText } });
-
-	const handleSendMessage = () => dispatch({ type: "SEND_MESSAGE" });
-
-	const handleModelChange = (id: string, newModel: string) =>
-		dispatch({ type: "CHANGE_MODEL", payload: { id, model: newModel } });
+	const handleModelChange = (id: string, model: string) => {
+		setState((prevState) => ({
+			...prevState,
+			...(id === "-1"
+				? { currentModel: model }
+				: {
+						messages: {
+							...prevState.messages,
+							[id]: {
+								...prevState.messages[id],
+								model: model,
+							},
+						},
+				  }),
+		}));
+	};
 
 	return {
-		chatState,
-		handleDelete,
-		handleResend,
-		handleTextChange,
+		state,
 		handleSendMessage,
+		handleResendMessage,
+		handleDeleteMessage,
+		handleTextChange,
 		handleModelChange,
 	};
-};
+}
